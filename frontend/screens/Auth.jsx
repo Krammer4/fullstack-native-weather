@@ -74,7 +74,7 @@ export const Auth = ({ navigation }) => {
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Регистрация");
+          navigation.navigate("Reg");
         }}
       >
         <Text style={styles.regText}>Зарегистрироваться</Text>
