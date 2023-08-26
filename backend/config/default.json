@@ -1,0 +1,5 @@
+{
+  "PORT": "5000",
+  "mongourl": "mongodb+srv://krammer:krammernative@cluster0.eovm5ao.mongodb.net/?retryWrites=true&w=majority",
+  "jwtsecret": "krammer loves frontend"
+}
