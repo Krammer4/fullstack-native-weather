@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Text,
   View,
@@ -7,33 +7,72 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
+import { useHttp } from "../hooks/useHttp";
+import { backend_url } from "../consts";
 
 export const Reg = ({ navigation }) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const { request, error, loading } = useHttp();
+
+  const [usernameInputValue, setUsernameInputValue] = useState("");
+  const [emailInputValue, setEmailInputValue] = useState("");
+  const [passwordInputValue, setPasswordInputValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const registerHandler = async () => {
+    try {
+      const data = await request(
+        `${backend_url}/api/auth/registration`,
+        "POST",
+        {
+          username: usernameInputValue,
+          email: emailInputValue,
+          password: passwordInputValue,
+        }
+      );
+      navigation.navigate("Auth");
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
+  };
 
   return (
     <View style={styles.mainBlock}>
       <TextInput
+        value={usernameInputValue}
+        onChangeText={(text) => setUsernameInputValue(text)}
         placeholder="Имя пользователя"
         style={styles.input}
         onSubmitEditing={() => emailRef.current.focus()}
       ></TextInput>
       <TextInput
+        value={emailInputValue}
+        onChangeText={(text) => setEmailInputValue(text)}
         ref={emailRef}
         onSubmitEditing={() => passwordRef.current.focus()}
-        keyboardType="email-adress"
+        autoCapitalize="none"
+        keyboardType="email-address"
         placeholder="Email"
         style={styles.input}
       ></TextInput>
       <TextInput
+        value={passwordInputValue}
+        onChangeText={(text) => setPasswordInputValue(text)}
         ref={passwordRef}
+        secureTextEntry
+        autoCapitalize="none"
         placeholder="Password"
         style={styles.input}
       ></TextInput>
       <TouchableOpacity style={styles.button}>
-        <Button color={"#ffffff"} title="Зарегистрироваться" />
+        <Button
+          onPress={registerHandler}
+          color={"#ffffff"}
+          title="Зарегистрироваться"
+        />
       </TouchableOpacity>
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate("Auth");
@@ -74,5 +113,14 @@ const styles = StyleSheet.create({
     maxWidth: 320,
     width: "100%",
     borderRadius: 10,
+  },
+  errorMessage: {
+    maxWidth: 320,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 20,
+    color: "#B22222",
+    fontWeight: "600",
+    textAlign: "center",
   },
 });
