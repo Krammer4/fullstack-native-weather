@@ -35,6 +35,7 @@ router.post("/user/add-place", async (req, res) => {
 
     user.places.push(place);
     await user.save();
+    res.status(200).json({ message: "Место успешно добавлено" });
   } catch (error) {
     res
       .status(500)

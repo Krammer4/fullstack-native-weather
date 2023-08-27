@@ -101,7 +101,9 @@ export const ChoosePlace = ({ navigation, route }) => {
           userId: userId,
         }
       );
-      setInputValue("");
+
+      setErrorMessage("");
+      navigation.navigate("AllPlaces");
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -115,17 +117,9 @@ export const ChoosePlace = ({ navigation, route }) => {
         {selectedLocation && <Marker coordinate={selectedLocation} />}
       </MapView>
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+
       <TouchableOpacity style={styles.button}>
-        <Button
-          onPress={async () => {
-            if (cityName) {
-              await saveChoosenPlace();
-              navigation.navigate("AllPlaces");
-            }
-          }}
-          color={"#fff"}
-          title="Сохранить"
-        />
+        <Button onPress={saveChoosenPlace} color={"#fff"} title="Сохранить" />
       </TouchableOpacity>
     </View>
   );
@@ -165,7 +159,7 @@ const styles = StyleSheet.create({
   },
   cityName: {
     fontSize: 26,
-    marginBottom: 20,
+
     fontWeight: "600",
   },
   errorMessage: {
@@ -174,6 +168,15 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     marginTop: 20,
     color: "#B22222",
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  successMessage: {
+    maxWidth: 320,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 20,
+    color: "#25ba7c",
     fontWeight: "600",
     textAlign: "center",
   },

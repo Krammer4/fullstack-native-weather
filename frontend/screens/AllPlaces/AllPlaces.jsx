@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { useHttp } from "../../hooks/useHttp";
@@ -70,6 +71,24 @@ export const AllPlaces = ({ navigation, route }) => {
     }
   }, [isFocused]);
 
+  const handleDeletePlace = (place) => {
+    Alert.alert(
+      "Удаление места",
+      `Вы уверены, что хотите удалить место "${place}"?`,
+      [
+        {
+          text: "Да",
+          onPress: () => deletePlace(place),
+        },
+        {
+          text: "Нет",
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.mainBlock}>
       <TouchableOpacity style={styles.addPlaceButton}>
@@ -104,7 +123,7 @@ export const AllPlaces = ({ navigation, route }) => {
                 <TouchableOpacity
                   onPress={() => {
                     if (userId) {
-                      deletePlace(item);
+                      handleDeletePlace(item);
                     }
                   }}
                 >
