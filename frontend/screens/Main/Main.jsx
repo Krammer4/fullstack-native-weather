@@ -112,6 +112,13 @@ export const Main = ({ navigation, route }) => {
                 </View>
               );
             })}
+            <View style={styles.myTownCard}>
+              <Button
+                style={styles.myTownCard}
+                color={"#fff"}
+                title={"..."}
+              ></Button>
+            </View>
             <TouchableOpacity style={styles.myLocationsButton}>
               <Button
                 onPress={() => navigation.navigate("AllPlaces")}
