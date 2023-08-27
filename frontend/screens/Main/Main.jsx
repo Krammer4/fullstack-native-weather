@@ -11,6 +11,7 @@ import { useHttp } from "../../hooks/useHttp";
 import { backend_url } from "../../consts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
+import { PlaceCard } from "../../components/PlaceCard/PlaceCard";
 
 export const Main = ({ navigation, route }) => {
   const isFocused = useIsFocused();
@@ -84,11 +85,7 @@ export const Main = ({ navigation, route }) => {
           <FlatList
             data={userData.places}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text>{item}</Text>
-              </View>
-            )}
+            renderItem={({ item }) => <PlaceCard cityName={item} />}
           />
         </View>
         <View>
@@ -98,6 +95,7 @@ export const Main = ({ navigation, route }) => {
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
+              alignItems: "center",
               marginTop: 10,
             }}
           >
@@ -150,7 +148,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   weatherBlocks: {
-    height: 100,
+    maxHeight: 500,
+    marginBottom: 40,
   },
   h2: {
     fontWeight: "500",
