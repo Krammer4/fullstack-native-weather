@@ -9,6 +9,7 @@ import { useAuth } from "./hooks/userAuth";
 import { AuthContext } from "./context/authContext";
 import { ChoosePlace } from "./screens/ChoosePlace/ChoosePlace";
 import { AllPlaces } from "./screens/AllPlaces/AllPlaces";
+import { City } from "./screens/City/City";
 
 export const useRoutes = (isAuthentificated) => {
   const Stack = createStackNavigator();
@@ -47,6 +48,11 @@ export const useRoutes = (isAuthentificated) => {
             name="AllPlaces"
             options={{ title: "Мои места" }}
             component={AllPlaces}
+          />
+          <Stack.Screen
+            name="City"
+            component={City}
+            options={({ route }) => ({ title: route.params.cityName })}
           />
         </Stack.Navigator>
       </NavigationContainer>
