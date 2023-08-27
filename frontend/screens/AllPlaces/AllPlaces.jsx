@@ -153,10 +153,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 20,
     backgroundColor: "#e7e5f0",
+    padding: 20,
   },
   addPlaceButton: {
     backgroundColor: "#25ba7c",
-    width: 250,
+    width: "100%",
     borderRadius: 10,
     padding: 8,
   },
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 10,
     borderRadius: 10,
-    width: 250,
+    width: 350,
     marginTop: 20,
   },
 });
