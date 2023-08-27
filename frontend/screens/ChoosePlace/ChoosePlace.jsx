@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHttp } from "../../hooks/useHttp";
 import { backend_url } from "../../consts";
 
-export const ChoosePlace = ({ navigation }) => {
+export const ChoosePlace = ({ navigation, route }) => {
   const { request, loading, error } = useHttp();
   const [userId, setUserId] = useState(null);
 
@@ -110,18 +110,6 @@ export const ChoosePlace = ({ navigation }) => {
   return (
     <View style={styles.mainBlock}>
       {cityName && <Text style={styles.cityName}>{cityName}</Text>}
-      <TextInput
-        value={inputValue}
-        onChangeText={(text) => {
-          setInputValue(text);
-        }}
-        onSubmitEditing={() => {
-          setCityName(inputValue);
-          setInputValue("");
-        }}
-        placeholder="Минск"
-        style={styles.input}
-      />
 
       <MapView style={styles.map} region={region} onPress={handleMapPress}>
         {selectedLocation && <Marker coordinate={selectedLocation} />}
@@ -129,9 +117,9 @@ export const ChoosePlace = ({ navigation }) => {
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       <TouchableOpacity style={styles.button}>
         <Button
-          onPress={() => {
+          onPress={async () => {
             if (cityName) {
-              saveChoosenPlace();
+              await saveChoosenPlace();
               navigation.navigate("AllPlaces");
             }
           }}
@@ -171,7 +159,7 @@ const styles = StyleSheet.create({
   map: {
     maxWidth: 320,
     width: "100%",
-    height: 250,
+    height: 500,
     borderRadius: 20,
     marginTop: 20,
   },

@@ -42,4 +42,22 @@ router.post("/user/add-place", async (req, res) => {
   }
 });
 
+router.delete("/user/delete-place", async (req, res) => {
+  const { userId, placeToDelete } = req.query;
+  console.log("USER ID", userId);
+  console.log(placeToDelete);
+  try {
+    const result = await User.updateOne(
+      { _id: userId },
+      { $pull: { places: placeToDelete } }
+    );
+
+    if (result.modifiedCount > 0) {
+      res.json({ message: "Место было успешно удалено" });
+    } else {
+      res.json({ message: "Место не найдено" });
+    }
+  } catch (error) {}
+});
+
 module.exports = router;
