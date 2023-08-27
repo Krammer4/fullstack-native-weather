@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,29 +6,33 @@ import {
   TouchableOpacity,
   FlatList,
   Button,
+  ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { useHttp } from "../../hooks/useHttp";
 import { backend_url } from "../../consts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { PlaceCard } from "../../components/PlaceCard/PlaceCard";
+import { AuthContext } from "../../context/authContext";
 
 export const Main = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const [userId, setUserId] = useState("");
   const { request, error, loading } = useHttp();
   const [userData, setUserData] = useState(null);
+  const auth = useContext(AuthContext);
 
   const fetchUserData = async (userId) => {
     try {
       const data = await request(`${backend_url}/api/user/${userId}`, "GET");
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const fetchData = async () => {
       const data = await AsyncStorage.getItem("userData");
       if (data) {
@@ -80,7 +84,7 @@ export const Main = ({ navigation, route }) => {
     );
   } else if (userData && userData.places.length !== 0) {
     return (
-      <View style={styles.mainBlock}>
+      <ScrollView style={styles.mainBlock}>
         <View style={styles.weatherBlocks}>
           <FlatList
             data={userData.places}
@@ -88,7 +92,7 @@ export const Main = ({ navigation, route }) => {
             renderItem={({ item }) => <PlaceCard cityName={item} />}
           />
         </View>
-        <View>
+        <View style={{ marginBottom: 20 }}>
           <Text style={styles.h2}>Мои локации</Text>
           <View
             style={{
@@ -126,7 +130,38 @@ export const Main = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+        <View style={{ marginBottom: 60 }}>
+          <Text style={styles.h2}>Аккаунт:</Text>
+          <Text style={{ fontSize: 18, fontWeight: "500", marginTop: 10 }}>
+            Username: {userData.username}
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: "500", marginTop: 10 }}>
+            Email: {userData.email}
+          </Text>
+          <TouchableOpacity style={styles.exit}>
+            <Button
+              onPress={() => {
+                auth.logout();
+              }}
+              color={"#FFF"}
+              title="Выйти"
+            />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
+  } else {
+    return (
+      <ActivityIndicator
+        size="large"
+        color="#5c529a"
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 80,
+        }}
+      />
     );
   }
 };
@@ -153,7 +188,7 @@ const styles = StyleSheet.create({
   },
   h2: {
     fontWeight: "500",
-    fontSize: 20,
+    fontSize: 24,
   },
   myTownCard: {
     fontSize: 16,
@@ -166,5 +201,11 @@ const styles = StyleSheet.create({
   myLocationsButton: {
     backgroundColor: "#25ba7c",
     borderRadius: 10,
+  },
+  exit: {
+    backgroundColor: "#B22222",
+    width: 100,
+    borderRadius: 10,
+    marginTop: 20,
   },
 });

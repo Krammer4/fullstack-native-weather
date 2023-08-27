@@ -92,12 +92,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 24,
     fontWeight: "600",
+    maxWidth: 140,
   },
   countryName: {
     color: "#FFF",
     fontSize: 16,
     paddingTop: 4,
     color: "#e7e5f0",
+    maxWidth: 140,
   },
   tempText: {
     color: "#FFF",

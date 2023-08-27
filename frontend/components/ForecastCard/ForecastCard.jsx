@@ -35,7 +35,14 @@ export const ForecastCard = ({ day }) => {
             <Text style={{ fontSize: 20, color: "#5c529a", fontWeight: "600" }}>
               {day.date}
             </Text>
-            <Text style={{ fontSize: 16, marginTop: 6, color: "#5c529a" }}>
+            <Text
+              style={{
+                fontSize: 16,
+                marginTop: 6,
+                color: "#5c529a",
+                maxWidth: 160,
+              }}
+            >
               {day.day.condition.text}
             </Text>
           </View>

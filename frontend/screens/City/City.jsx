@@ -17,7 +17,6 @@ export const City = () => {
         `http://api.weatherapi.com/v1/forecast.json?key=ccb1784bc0454be99c7114034232508&q=${cityName}&days=7&aqi=no&alerts=no&lang=ru`
       );
       setWeather(weatherData);
-      console.log(weatherData.forecast.forecastday);
     } catch (error) {
       console.log(`Error while fetching city forecast: ${error.message}`);
     }
@@ -117,7 +116,7 @@ export const City = () => {
         <View style={{ height: "100%", marginBottom: 60 }}>
           <Text style={styles.h2}>Прогноз на неделю:</Text>
           {weather.forecast.forecastday.slice(1).map((day) => {
-            return <ForecastCard day={day} />;
+            return <ForecastCard key={day.date} day={day} />;
           })}
         </View>
       </ScrollView>
@@ -140,12 +139,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 28,
     fontWeight: "600",
+    maxWidth: 200,
   },
   countryName: {
     color: "#FFF",
     fontSize: 18,
     paddingTop: 4,
     color: "#e7e5f0",
+    maxWidth: 180,
   },
   conditionText: {
     color: "#fff",
@@ -171,8 +172,8 @@ const styles = StyleSheet.create({
   },
   h2: {
     fontWeight: "600",
-    fontSize: 20,
+    fontSize: 22,
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
